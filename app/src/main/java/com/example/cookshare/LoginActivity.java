@@ -1,10 +1,13 @@
 package com.example.cookshare;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -49,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                             //if there is a problem with login, don't continue
                             if (e!=null){
                                 Log.e(TAG, "issue with login", e);
+                                btnLogin.setEnabled(true);
                                 return;
                             }
                             //if login is okay, navigate to the main activity
@@ -61,6 +65,22 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_register, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.register){
+            Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
+            startActivity(i);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void goMainActivity() {
