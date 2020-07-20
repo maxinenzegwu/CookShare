@@ -93,7 +93,7 @@ Simple platform that allows people to connect through their interest in cooking 
 
 *  MS1:
  - Finish all recyclerviews
- - Allow scrolling of at least 50 posts
+ - Allow pull to refresh for posts
  - Add functionality for liking/saving posts
 
 *  MS2: 
