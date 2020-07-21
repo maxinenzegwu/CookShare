@@ -68,6 +68,7 @@ Simple platform that allows people to connect through their interest in cooking 
 
 * Home Feed
 * Liked Photos
+* User Photos
 
 **Flow Navigation** (Screen to Screen)
 
@@ -84,15 +85,23 @@ Simple platform that allows people to connect through their interest in cooking 
 
 ![](https://i.imgur.com/QJJAlt8.jpg)
 
-### [BONUS] Digital Wireframes & Mockups
+### Milestones
+ *  MS0: 
+ - Setup Parse and Heroku 
+ - Create layouts for all fragments and activities
+ - Handle all tab navigations and flow to activities
 
-### [BONUS] Interactive Prototype
+*  MS1:
+ - Finish all recyclerviews
+ - Allow pull to refresh for posts
+ - Add functionality for liking/saving posts
 
+*  MS2: 
+ - Add searching algorithm
+ - Create Logout Screen
+ - Click a post to view the recipe for it
+
+* Nice to haves:
+ - Add more to searching (search for users)
+ - Usable in landscape mode 
 ## Schema 
-[This section will be completed in Unit 9]
-### Models
-[Add table of models]
-### Networking
-- [Add list of network requests by screen ]
-- [Create basic snippets for each Parse network request]
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
