@@ -11,9 +11,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.cookshare.MainActivity;
+import com.example.cookshare.OnDoubleTapListener;
 import com.example.cookshare.Post;
 import com.example.cookshare.PostsAdapter;
 import com.example.cookshare.R;

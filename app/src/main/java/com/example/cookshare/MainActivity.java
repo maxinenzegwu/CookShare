@@ -15,6 +15,7 @@ import com.example.cookshare.fragments.HomeFragment;
 import com.example.cookshare.fragments.SavedFragment;
 import com.example.cookshare.fragments.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
             return true;
         }
+        if (item.getItemId() == R.id.action_logout){
+            ParseUser.logOut();
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
+            Toast.makeText(MainActivity.this, "logout!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -55,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (menuItem.getItemId()) {
                     case R.id.action_home:
-                        Toast.makeText(MainActivity.this, "Home!", Toast.LENGTH_SHORT).show();
                         fragment = new HomeFragment();
                         break;
                     case R.id.action_saved:

@@ -5,8 +5,14 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
+@Parcel(analyze = Post.class)
 @ParseClassName("Post")
 public class Post extends ParseObject {
+
+    // no-arg, empty constructor required for Parceler
+    public Post(){}
 
     //define keys
     public static final String KEY_DESCRIPTION = "description";

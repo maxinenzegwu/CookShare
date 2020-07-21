@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.register){
+        if (item.getItemId() == R.id.action_register){
             Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
             startActivity(i);
             finish();
