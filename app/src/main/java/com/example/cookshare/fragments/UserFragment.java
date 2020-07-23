@@ -17,6 +17,7 @@ public class UserFragment extends HomeFragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
         query.include(Post.KEY_USER);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -31,6 +32,7 @@ public class UserFragment extends HomeFragment {
                 }
                 allPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
             }
         });
     }

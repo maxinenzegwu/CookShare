@@ -20,7 +20,7 @@
     <ImageView
         android:id="@+id/ivFood"
         android:layout_width="match_parent"
-        android:layout_height="298dp"
+        android:layout_height="250dp"
         android:layout_margin="8dp"
         android:scaleType="centerCrop"
         tools:src="@tools:sample/avatars" />
@@ -46,11 +46,10 @@
         android:layout_height="wrap_content"
         android:text="post" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <Button
+        android:id="@+id/btnCancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_bottom_navigation" />
+        android:text="cancel" />
 
 </LinearLayout>

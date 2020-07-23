@@ -4,7 +4,6 @@
 
     <item
         android:id="@+id/action_register"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="Register"
+        android:title="New user? register!"
         app:showAsAction="always" />
 </menu>

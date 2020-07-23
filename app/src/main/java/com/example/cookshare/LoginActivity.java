@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_register){
             Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
             startActivity(i);
-            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

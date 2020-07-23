@@ -35,6 +35,7 @@ public class CreateActivity extends AppCompatActivity {
     private EditText etRecipeName;
     private ImageView btnTakePicture;
     private Button btnPost;
+    private Button btnCancel;
     private ImageView ivFood;
     private File photoFile;
     public String photoFileName = "photo.jpg";
@@ -48,8 +49,15 @@ public class CreateActivity extends AppCompatActivity {
         btnTakePicture = findViewById(R.id.btnTakePicture);
         btnPost = findViewById(R.id.btnPost);
         ivFood = findViewById(R.id.ivFood);
-//        queryPosts();
+        btnCancel = findViewById(R.id.btnCancel);
 
+btnCancel.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+
+        finish();
+    }
+});
         btnTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

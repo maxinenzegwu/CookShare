@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.action_logout){
             ParseUser.logOut();
-            ParseUser currentUser = ParseUser.getCurrentUser();
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
             Toast.makeText(MainActivity.this, "logout!", Toast.LENGTH_SHORT).show();
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

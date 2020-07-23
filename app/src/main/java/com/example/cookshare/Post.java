@@ -12,7 +12,8 @@ import org.parceler.Parcel;
 public class Post extends ParseObject {
 
     // no-arg, empty constructor required for Parceler
-    public Post(){}
+    public Post() {
+    }
 
     //define keys
     public static final String KEY_DESCRIPTION = "description";
@@ -21,35 +22,35 @@ public class Post extends ParseObject {
     public static final String KEY_RECIPE = "recipe";
 
     //define getters and setters for each key
-    public String getDescription(){
+    public String getDescription() {
         return getString(KEY_DESCRIPTION);
     }
 
-    public ParseFile getImage(){
+    public ParseFile getImage() {
         return getParseFile(KEY_IMAGE);
     }
 
-    public ParseUser getUser(){
+    public ParseUser getUser() {
         return getParseUser(KEY_USER);
     }
 
-    public String getRecipe(){
+    public String getRecipe() {
         return getString(KEY_RECIPE);
     }
 
-    public void setDescription(String description){
+    public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
     }
 
-    public void setImage(ParseFile parsefile){
+    public void setImage(ParseFile parsefile) {
         put(KEY_IMAGE, parsefile);
     }
 
-    public void setUser(ParseUser parseUser){
+    public void setUser(ParseUser parseUser) {
         put(KEY_USER, parseUser);
     }
 
-    public void setRecipe(String recipe){
+    public void setRecipe(String recipe) {
         put(KEY_RECIPE, recipe);
     }
 
