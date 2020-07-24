@@ -5,7 +5,10 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
 import org.parceler.Parcel;
+
+import java.lang.reflect.Array;
 
 @Parcel(analyze = Post.class)
 @ParseClassName("Post")
@@ -20,6 +23,8 @@ public class Post extends ParseObject {
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
     public static final String KEY_RECIPE = "recipe";
+    public static final String KEY_FAVORITED = "favorited";
+    public static final String KEY_LIKES = "likes";
 
     //define getters and setters for each key
     public String getDescription() {
@@ -38,6 +43,14 @@ public class Post extends ParseObject {
         return getString(KEY_RECIPE);
     }
 
+    public JSONArray getFavorited() {
+        return getJSONArray(KEY_FAVORITED);
+    }
+
+    public int getLikes() {
+        return getInt(KEY_LIKES);
+    }
+
     public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
     }
@@ -52,6 +65,14 @@ public class Post extends ParseObject {
 
     public void setRecipe(String recipe) {
         put(KEY_RECIPE, recipe);
+    }
+
+    public void setFavorited(JSONArray favorites) {
+        put(KEY_FAVORITED, favorites);
+    }
+
+    public void setLikes(int likes) {
+        put(KEY_LIKES, likes);
     }
 
 }

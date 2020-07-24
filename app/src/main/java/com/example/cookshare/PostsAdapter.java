@@ -2,6 +2,7 @@ package com.example.cookshare;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
-
+public static final String TAG = "PostsAdapter";
     private Context context;
     private List<Post> posts;
 
@@ -60,20 +66,24 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return posts.size();
     }
 
+
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvUsername;
         private TextView tvRecipeName;
         private ImageView ivPost;
         private ImageButton btnSave;
+        private TextView tvLikes;
         private boolean mClicked = false;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvRecipeName = itemView.findViewById(R.id.tvRecipeNameDetails);
             ivPost = itemView.findViewById(R.id.ivPost);
+            tvLikes = itemView.findViewById(R.id.tvLikes);
             btnSave = itemView.findViewById(R.id.btnSave);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,11 +91,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     if (mClicked == false){
                         mClicked = true;
                         view.setBackgroundResource(R.drawable.ic_baseline_star_24);
+                        likePost();
+
 
                     }
                     else{
                         mClicked = false;
                         view.setBackgroundResource(android.R.color.transparent);
+                        unLikePost();
 
                     }
                 }
@@ -97,23 +110,65 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public void bind(Post post) {
             tvUsername.setText(post.getUser().getUsername());
             tvRecipeName.setText(post.getDescription());
+            tvLikes.setText(Integer.toString(post.getLikes()));
             ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(context).load(post.getImage().getUrl()).into(ivPost);
             }
         }
 
+        public void likePost() {
+            int position = getAdapterPosition();
+            Post post = posts.get(position);
+            post.setLikes(post.getLikes() + 1);
+            Toast.makeText(context, "liking a post", Toast.LENGTH_SHORT).show();
+            post.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    //check if there is an exception
+                    if (e!=null){
+                        Log.e(TAG, "error while saving", e);
+                        Toast.makeText(context, "error while saving", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(context, "saved post!", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "saved post!");
+
+                }
+            });
+            notifyDataSetChanged();
+        }
+
+        public void unLikePost() {
+            int position = getAdapterPosition();
+            Post post = posts.get(position);
+            post.setLikes(post.getLikes() - 1);
+            Toast.makeText(context, "liking a post", Toast.LENGTH_SHORT).show();
+            post.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    //check if there is an exception
+                    if (e!=null){
+                        Log.e(TAG, "error while saving", e);
+                        Toast.makeText(context, "error while saving", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(context, "saved post!", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "saved post!");
+
+                }
+            });
+            notifyDataSetChanged();
+        }
         @Override
         public void onClick(View view) {
             // gets item position
             int position = getAdapterPosition();
             // make sure the position is valid, i.e. actually exists in the view
             if (position != RecyclerView.NO_POSITION) {
-                // get the movie at the position, this won't work if the class is static
+                // get the post at the position, this won't work if the class is static
                 Post post = posts.get(position);
                 // create intent for the new activity
                 Intent intent = new Intent(context, PostRecipeActivity.class);
-                // serialize the movie using parceler, use its short name as a key
+                // serialize the post using parceler, use its short name as a key
                 intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
                 // show the activity
                 context.startActivity(intent);

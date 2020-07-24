@@ -33,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.app_bar_search){
+            Intent i = new Intent(this, SearchActivity.class);
+            startActivity(i);
+            return true;
+        }
         if (item.getItemId() == R.id.action_create) {
             Intent i = new Intent(MainActivity.this, CreateActivity.class);
             startActivity(i);

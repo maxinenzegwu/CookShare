@@ -29,11 +29,8 @@ public class SavedFragment extends HomeFragment {
     @Override
     protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
-
-//        query.whereEqualTo();
         query.include(Post.KEY_USER);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.addDescendingOrder(Post.KEY_LIKES);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

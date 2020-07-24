@@ -150,6 +150,7 @@ btnCancel.setOnClickListener(new View.OnClickListener() {
         post.setRecipe(recipe);
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
+        post.setLikes(0);
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -162,6 +163,7 @@ btnCancel.setOnClickListener(new View.OnClickListener() {
                 etRecipe.setText("");
                 etRecipeName.setText("");
                 ivFood.setImageResource(0);
+                finish();
             }
         });
     }

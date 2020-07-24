@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.cookshare.CreateActivity;
 import com.example.cookshare.MainActivity;
 import com.example.cookshare.OnDoubleTapListener;
 import com.example.cookshare.Post;
@@ -23,8 +24,13 @@ import com.example.cookshare.PostsAdapter;
 import com.example.cookshare.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,4 +106,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
+
 }

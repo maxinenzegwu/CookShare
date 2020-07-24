@@ -86,22 +86,28 @@ Simple platform that allows people to connect through their interest in cooking 
 ![](https://i.imgur.com/QJJAlt8.jpg)
 
 ### Milestones
- *  MS0: 
- - Setup Parse and Heroku 
- - Create layouts for all fragments and activities
- - Handle all tab navigations and flow to activities
+ *  MS0:
+ [x] Setup Parse and Heroku
+ [x] Create layouts for all fragments and activities
+ [x] Handle all tab navigations and flow to activities
 
 *  MS1:
- - Finish all recyclerviews
- - Allow pull to refresh for posts
- - Add functionality for liking/saving posts
+ [x] Finish all recyclerviews
+ [x] Allow pull to refresh for posts
+ [x] Add functionality for liking/saving posts
 
-*  MS2: 
- - Add searching algorithm
- - Create Logout Screen
- - Click a post to view the recipe for it
+*  MS2:
+ [ ] Add searching algorithm
+    - allow users to search through recipe puppy api
+    - search by ingredients separated by a comma
+    - sort through and find closest match
+[ ] Incorporate SDK
+    - login through facebook or google
+    - use either facebook or google SDK
+ [ ] Create Logout Screen
+ [x] Click a post to view the recipe for it
 
 * Nice to haves:
- - Add more to searching (search for users)
- - Usable in landscape mode 
-## Schema 
+ - Add more accuracy to searching
+ - Usable in landscape mode
+## Schema

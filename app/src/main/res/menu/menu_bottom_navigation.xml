@@ -14,7 +14,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_saved"
-        android:icon="@drawable/ic_baseline_check_24"
-        android:title="Saved"
+        android:icon="@drawable/ic_baseline_trending_up_24"
+        android:title="Popular"
         app:showAsAction="always" />
 </menu>
