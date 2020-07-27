@@ -151,6 +151,7 @@ btnCancel.setOnClickListener(new View.OnClickListener() {
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
         post.setLikes(0);
+
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

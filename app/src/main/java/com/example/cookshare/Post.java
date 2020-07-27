@@ -1,8 +1,10 @@
 package com.example.cookshare;
 
+import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -25,6 +27,7 @@ public class Post extends ParseObject {
     public static final String KEY_RECIPE = "recipe";
     public static final String KEY_FAVORITED = "favorited";
     public static final String KEY_LIKES = "likes";
+    public static final String KEY_LIKEDUSERS = "likedUsers";
 
     //define getters and setters for each key
     public String getDescription() {
@@ -47,9 +50,14 @@ public class Post extends ParseObject {
         return getJSONArray(KEY_FAVORITED);
     }
 
+
     public int getLikes() {
         return getInt(KEY_LIKES);
     }
+
+   public ParseRelation<ParseUser> getLikedUsers(){
+        return getRelation(KEY_LIKEDUSERS);
+   }
 
     public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
@@ -73,6 +81,10 @@ public class Post extends ParseObject {
 
     public void setLikes(int likes) {
         put(KEY_LIKES, likes);
+    }
+
+    public void setLikedUsers(ParseUser puser){
+        put(KEY_LIKEDUSERS, puser);
     }
 
 }

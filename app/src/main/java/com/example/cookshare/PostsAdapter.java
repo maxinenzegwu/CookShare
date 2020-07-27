@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -24,11 +26,12 @@ import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
-public static final String TAG = "PostsAdapter";
+    public static final String TAG = "PostsAdapter";
     private Context context;
     private List<Post> posts;
 
@@ -67,7 +70,6 @@ public static final String TAG = "PostsAdapter";
     }
 
 
-
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvUsername;
@@ -80,6 +82,14 @@ public static final String TAG = "PostsAdapter";
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
+//            int position = getAdapterPosition();
+//            Post post = posts.get(position);
+//            if (post.getIsLiked() == 1){
+//                btnSave.setBackgroundResource(R.drawable.ic_baseline_star_24);
+//            }
+//            else{
+//                btnSave.setBackgroundResource(android.R.color.transparent);
+//            }
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvRecipeName = itemView.findViewById(R.id.tvRecipeNameDetails);
             ivPost = itemView.findViewById(R.id.ivPost);
@@ -88,20 +98,27 @@ public static final String TAG = "PostsAdapter";
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mClicked == false){
-                        mClicked = true;
+                    int position = getAdapterPosition();
+                    Post post = posts.get(position);
+
+                    if (2==2) {
+                        post.getLikedUsers().add(ParseUser.getCurrentUser());
+
+                        likePost(post);
                         view.setBackgroundResource(R.drawable.ic_baseline_star_24);
-                        likePost();
-
 
                     }
-                    else{
-                        mClicked = false;
+                    if (5==2) {
+                        post.getLikedUsers().remove(ParseUser.getCurrentUser());
+
+                        unLikePost(post);
                         view.setBackgroundResource(android.R.color.transparent);
-                        unLikePost();
 
                     }
+                    notifyDataSetChanged();
+
                 }
+
             });
             itemView.setOnClickListener(this);
         }
@@ -117,20 +134,18 @@ public static final String TAG = "PostsAdapter";
             }
         }
 
-        public void likePost() {
-            int position = getAdapterPosition();
-            Post post = posts.get(position);
-            post.setLikes(post.getLikes() + 1);
+        public void likePost(Post post) {
+
             Toast.makeText(context, "liking a post", Toast.LENGTH_SHORT).show();
             post.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     //check if there is an exception
-                    if (e!=null){
+                    if (e != null) {
                         Log.e(TAG, "error while saving", e);
                         Toast.makeText(context, "error while saving", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(context, "saved post!", Toast.LENGTH_SHORT).show();
+
                     Log.i(TAG, "saved post!");
 
                 }
@@ -138,16 +153,15 @@ public static final String TAG = "PostsAdapter";
             notifyDataSetChanged();
         }
 
-        public void unLikePost() {
-            int position = getAdapterPosition();
-            Post post = posts.get(position);
+        public void unLikePost(Post post) {
+
             post.setLikes(post.getLikes() - 1);
             Toast.makeText(context, "liking a post", Toast.LENGTH_SHORT).show();
             post.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     //check if there is an exception
-                    if (e!=null){
+                    if (e != null) {
                         Log.e(TAG, "error while saving", e);
                         Toast.makeText(context, "error while saving", Toast.LENGTH_SHORT).show();
                     }
@@ -158,6 +172,7 @@ public static final String TAG = "PostsAdapter";
             });
             notifyDataSetChanged();
         }
+
         @Override
         public void onClick(View view) {
             // gets item position
