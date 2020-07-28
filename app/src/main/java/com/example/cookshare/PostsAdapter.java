@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,15 +31,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> implements Filterable {
 
     public static final String TAG = "PostsAdapter";
     protected Context mContext;
     protected List<Post> mPosts;
+    private List<Post> mPostsCopy;
 
     public PostsAdapter(Context context, List<Post> posts) {
         this.mContext = context;
         this.mPosts = posts;
+        this.mPostsCopy = new ArrayList<>(posts);
     }
 
     public void clear() {
@@ -69,6 +73,37 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return mPosts.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return postsFilter;
+    }
+
+    private Filter postsFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Post> filteredList = new ArrayList<>();
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(mPostsCopy);
+            } else {
+                String filterPatter = charSequence.toString().toLowerCase().trim();
+                for (Post post : mPostsCopy) {
+                    if (post.getDescription().toLowerCase().contains(filterPatter)) {
+                        filteredList.add(post);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            mPosts.clear();
+            mPosts.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -88,6 +123,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivPost = itemView.findViewById(R.id.ivPost);
             tvLikes = itemView.findViewById(R.id.tvLikes);
             btnSave = itemView.findViewById(R.id.btnSave);
+            btnSave.setBackgroundResource(android.R.color.transparent);
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

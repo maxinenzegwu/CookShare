@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
     public static final String TAG = "HomeFragment";
     protected RecyclerView mRvPosts;
     protected PostsAdapter mAdapter;
-    protected List<Post> mAllPosts;
+    public List<Post> mAllPosts;
 
     public HomeFragment() {
         // Required empty public constructor
