@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.parceler.Parcel;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @Parcel(analyze = Post.class)
 @ParseClassName("Post")
@@ -46,8 +48,8 @@ public class Post extends ParseObject {
         return getString(KEY_RECIPE);
     }
 
-    public JSONArray getFavorited() {
-        return getJSONArray(KEY_FAVORITED);
+    public List<String> getFavorited(){
+        return getList(KEY_FAVORITED);
     }
 
 
@@ -55,9 +57,7 @@ public class Post extends ParseObject {
         return getInt(KEY_LIKES);
     }
 
-   public ParseRelation<ParseUser> getLikedUsers(){
-        return getRelation(KEY_LIKEDUSERS);
-   }
+
 
     public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
@@ -75,7 +75,7 @@ public class Post extends ParseObject {
         put(KEY_RECIPE, recipe);
     }
 
-    public void setFavorited(JSONArray favorites) {
+    public void setFavorited(List<String> favorites) {
         put(KEY_FAVORITED, favorites);
     }
 
@@ -83,8 +83,5 @@ public class Post extends ParseObject {
         put(KEY_LIKES, likes);
     }
 
-    public void setLikedUsers(ParseUser puser){
-        put(KEY_LIKEDUSERS, puser);
-    }
 
 }

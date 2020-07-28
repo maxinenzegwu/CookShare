@@ -19,9 +19,9 @@ import com.parse.ParseUser;
 public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "LoginActivity";
-    private Button btnLogin;
-    private TextView etUsername;
-    private TextView etPassword;
+    private Button mBtnLogin;
+    private TextView mEtUsername;
+    private TextView mEtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +33,17 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        btnLogin = findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        mEtUsername = findViewById(R.id.etUsername);
+        mEtPassword = findViewById(R.id.etPassword);
+        mBtnLogin = findViewById(R.id.btnLogin);
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "clicked login button");
-                final String username = etUsername.getText().toString();
-                String password = etPassword.getText().toString();
+                final String username = mEtUsername.getText().toString();
+                String password = mEtPassword.getText().toString();
 
-                btnLogin.setEnabled(false);
+                mBtnLogin.setEnabled(false);
 
                 //log in the user
                 ParseUser.logInInBackground(username, password, new LogInCallback() {
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                             //if there is a problem with login, don't continue
                             if (e!=null){
                                 Log.e(TAG, "issue with login", e);
-                                btnLogin.setEnabled(true);
+                                mBtnLogin.setEnabled(true);
                                 return;
                             }
                             //if login is okay, navigate to the main activity

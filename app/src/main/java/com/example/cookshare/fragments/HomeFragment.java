@@ -5,8 +5,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
@@ -34,17 +37,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
 
-    SwipeRefreshLayout swipeContainer;
+    SwipeRefreshLayout mSwipeContainer;
     public static final String TAG = "HomeFragment";
-    private RecyclerView rvPosts;
-    protected PostsAdapter adapter;
-    protected List<Post> allPosts;
+    protected RecyclerView mRvPosts;
+    protected PostsAdapter mAdapter;
+    protected List<Post> mAllPosts;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,22 +67,25 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        swipeContainer = view.findViewById(R.id.swipeContainer);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeContainer = view.findViewById(R.id.swipeContainer);
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Log.i(TAG, "fetching new data!");
-                adapter.clear();
+                mAdapter.clear();
                 queryPosts();
             }
         });
-        rvPosts = view.findViewById(R.id.rvPosts);
-        allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
-        rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRvPosts = view.findViewById(R.id.rvPosts);
+        mAllPosts = new ArrayList<>();
+        mAdapter = new PostsAdapter(getContext(), mAllPosts);
+        mRvPosts.setAdapter(mAdapter);
+        mRvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+//        SnapHelper snapHelper = new LinearSnapHelper();
+//        snapHelper.attachToRecyclerView(mRvPosts);
+//        mRvPosts.setItemAnimator(new SlideInDownAnimator());
         queryPosts();
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -100,9 +109,9 @@ public class HomeFragment extends Fragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                 }
-                allPosts.addAll(posts);
-                adapter.notifyDataSetChanged();
-                swipeContainer.setRefreshing(false);
+                mAllPosts.addAll(posts);
+                mAdapter.notifyDataSetChanged();
+                mSwipeContainer.setRefreshing(false);
             }
         });
     }

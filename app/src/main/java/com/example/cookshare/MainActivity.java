@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.cookshare.fragments.HomeFragment;
+import com.example.cookshare.fragments.LikedFragment;
 import com.example.cookshare.fragments.SavedFragment;
 import com.example.cookshare.fragments.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,10 +21,9 @@ import com.parse.ParseUser;
 public class MainActivity extends AppCompatActivity {
 
 
-
     public static final String TAG = "MainActivity";
-    private BottomNavigationView bottomNavigationView;
-    final FragmentManager fragmentManager = getSupportFragmentManager();
+    private BottomNavigationView mBottomNavigationView;
+    final FragmentManager mFragmentManager = getSupportFragmentManager();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.app_bar_search){
+        if (item.getItemId() == R.id.app_bar_search) {
             Intent i = new Intent(this, SearchActivity.class);
             startActivity(i);
             return true;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
             return true;
         }
-        if (item.getItemId() == R.id.action_logout){
+        if (item.getItemId() == R.id.action_logout) {
             ParseUser.logOut();
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
@@ -51,7 +51,13 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return true;
         }
+        if (item.getItemId() == R.id.action_favorites) {
+            Fragment fragment;
+            fragment = new LikedFragment();
+            mFragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+        }
         return super.onOptionsItemSelected(item);
+
     }
 
     @Override
@@ -59,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        mBottomNavigationView = findViewById(R.id.bottom_navigation);
 //        queryPosts();
 
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Fragment fragment;
@@ -79,12 +85,12 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new UserFragment();
                         break;
                 }
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                mFragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
                 return true;
             }
         });
         // Set default selection
-        bottomNavigationView.setSelectedItemId(R.id.action_home);
+        mBottomNavigationView.setSelectedItemId(R.id.action_home);
 
     }
 }

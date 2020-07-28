@@ -16,9 +16,9 @@ import com.parse.SignUpCallback;
 public class RegistrationActivity extends AppCompatActivity {
 
     public static final String TAG = "RegistrationActivity";
-    private Button btnRegister;
-    private TextView etRegisterUsername;
-    private TextView etRegisterPassword;
+    private Button mBtnRegister;
+    private TextView mEtRegisterUsername;
+    private TextView mEtRegisterPassword;
 
 
 
@@ -26,16 +26,16 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        etRegisterUsername = findViewById(R.id.etRegisterUsername);
-        etRegisterPassword = findViewById(R.id.etRegisterPassword);
-        btnRegister = findViewById(R.id.btnRegister);
+        mEtRegisterUsername = findViewById(R.id.etRegisterUsername);
+        mEtRegisterPassword = findViewById(R.id.etRegisterPassword);
+        mBtnRegister = findViewById(R.id.btnRegister);
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "clicked register button");
-                String username = etRegisterUsername.getText().toString();
-                String password = etRegisterPassword.getText().toString();
+                String username = mEtRegisterUsername.getText().toString();
+                String password = mEtRegisterPassword.getText().toString();
                 ParseUser user = new ParseUser();
 
                 user.setUsername(username);

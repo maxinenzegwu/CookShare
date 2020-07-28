@@ -43,9 +43,9 @@ public class SavedFragment extends HomeFragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                 }
-                allPosts.addAll(posts);
-                adapter.notifyDataSetChanged();
-                swipeContainer.setRefreshing(false);
+                mAllPosts.addAll(posts);
+                mAdapter.notifyDataSetChanged();
+                mSwipeContainer.setRefreshing(false);
             }
         });
     }

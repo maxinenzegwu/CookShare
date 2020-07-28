@@ -15,25 +15,25 @@ import org.parceler.Parcels;
 
 public class PostRecipeActivity extends AppCompatActivity {
 
-    Post post;
-    TextView tvRecipeNameDetails;
-    TextView tvRecipeDetails;
-    ImageView ivFoodDetails;
+    Post mPost;
+    TextView mTvRecipeNameDetails;
+    TextView mTvRecipeDetails;
+    ImageView mIvFoodDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_recipe);
-        tvRecipeNameDetails = findViewById(R.id.tvRecipeNameDetails);
-        tvRecipeDetails = findViewById(R.id.tvRecipeDetails);
-        ivFoodDetails = findViewById(R.id.ivFoodDetails);
-        post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
-        Log.d("PostRecipeActivity", String.format("Showing details for '%s'", post.getDescription()));
-        tvRecipeNameDetails.setText(post.getDescription());
-        tvRecipeDetails.setText(post.getRecipe());
-        ParseFile image = post.getImage();
+        mTvRecipeNameDetails = findViewById(R.id.tvRecipeNameDetails);
+        mTvRecipeDetails = findViewById(R.id.tvRecipeDetails);
+        mIvFoodDetails = findViewById(R.id.ivFoodDetails);
+        mPost = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
+        Log.d("PostRecipeActivity", String.format("Showing details for '%s'", mPost.getDescription()));
+        mTvRecipeNameDetails.setText(mPost.getDescription());
+        mTvRecipeDetails.setText(mPost.getRecipe());
+        ParseFile image = mPost.getImage();
         if (image != null) {
-            Glide.with(this).load(post.getImage().getUrl()).into(ivFoodDetails);
+            Glide.with(this).load(mPost.getImage().getUrl()).into(mIvFoodDetails);
         }
 
     }

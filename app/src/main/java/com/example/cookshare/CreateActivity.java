@@ -31,57 +31,57 @@ import java.util.List;
 public class CreateActivity extends AppCompatActivity {
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     public static final String TAG = "CreateActivity";
-    private EditText etRecipe;
-    private EditText etRecipeName;
-    private ImageView btnTakePicture;
-    private Button btnPost;
-    private Button btnCancel;
-    private ImageView ivFood;
-    private File photoFile;
-    public String photoFileName = "photo.jpg";
+    private EditText mEtRecipe;
+    private EditText mEtRecipeName;
+    private ImageView mBtnTakePicture;
+    private Button mBtnPost;
+    private Button mBtnCancel;
+    private ImageView mIvFood;
+    private File mPhotoFile;
+    public String mPhotoFileName = "photo.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
-        etRecipe = findViewById(R.id.etRecipe);
-        etRecipeName = findViewById(R.id.etRecipeName);
-        btnTakePicture = findViewById(R.id.btnTakePicture);
-        btnPost = findViewById(R.id.btnPost);
-        ivFood = findViewById(R.id.ivFood);
-        btnCancel = findViewById(R.id.btnCancel);
+        mEtRecipe = findViewById(R.id.etRecipe);
+        mEtRecipeName = findViewById(R.id.etRecipeName);
+        mBtnTakePicture = findViewById(R.id.btnTakePicture);
+        mBtnPost = findViewById(R.id.btnPost);
+        mIvFood = findViewById(R.id.ivFood);
+        mBtnCancel = findViewById(R.id.btnCancel);
 
-btnCancel.setOnClickListener(new View.OnClickListener() {
+mBtnCancel.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
 
         finish();
     }
 });
-        btnTakePicture.setOnClickListener(new View.OnClickListener() {
+        mBtnTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCamera();
             }
         });
 
-        btnPost.setOnClickListener(new View.OnClickListener() {
+        mBtnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(CreateActivity.this, "button is clicked!", Toast.LENGTH_SHORT).show();
-                String recipeName = etRecipeName.getText().toString();
-                String recipe = etRecipe.getText().toString();
+                String recipeName = mEtRecipeName.getText().toString();
+                String recipe = mEtRecipe.getText().toString();
                 //check if recipe name or recipe is empty
                 if (recipeName.isEmpty() || recipe.isEmpty()){
                     Toast.makeText(CreateActivity.this, "Must post a recipe and recipe name!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(photoFile == null || ivFood.getDrawable() == null){
+                if(mPhotoFile == null || mIvFood.getDrawable() == null){
                     Toast.makeText(CreateActivity.this, "There is no image!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                savePost(recipeName, recipe, currentUser, photoFile);
+                savePost(recipeName, recipe, currentUser, mPhotoFile);
             }
         });
 
@@ -93,12 +93,12 @@ btnCancel.setOnClickListener(new View.OnClickListener() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName);
+        mPhotoFile = getPhotoFileUri(mPhotoFileName);
 
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(CreateActivity.this, "com.codepath.fileprovider", photoFile);
+        Uri fileProvider = FileProvider.getUriForFile(CreateActivity.this, "com.codepath.fileprovider", mPhotoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
@@ -115,11 +115,11 @@ btnCancel.setOnClickListener(new View.OnClickListener() {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                Bitmap takenImage = BitmapFactory.decodeFile(mPhotoFile.getAbsolutePath());
                 // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
 
-                ivFood.setImageBitmap(takenImage);
+                mIvFood.setImageBitmap(takenImage);
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
@@ -161,9 +161,9 @@ btnCancel.setOnClickListener(new View.OnClickListener() {
                     Toast.makeText(CreateActivity.this, "error while saving", Toast.LENGTH_SHORT).show();
                 }
                 Log.i(TAG, "saved post!");
-                etRecipe.setText("");
-                etRecipeName.setText("");
-                ivFood.setImageResource(0);
+                mEtRecipe.setText("");
+                mEtRecipeName.setText("");
+                mIvFood.setImageResource(0);
                 finish();
             }
         });

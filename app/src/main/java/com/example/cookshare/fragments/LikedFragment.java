@@ -18,6 +18,8 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
+import static com.example.cookshare.Post.KEY_FAVORITED;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LikedFragment#newInstance} factory method to
@@ -29,8 +31,7 @@ public class LikedFragment extends HomeFragment {
     protected void queryPosts() {
 
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-
-        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
+        query.whereContains(Post.KEY_FAVORITED, ParseUser.getCurrentUser().getObjectId());
         query.include(Post.KEY_USER);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Post>() {
@@ -45,9 +46,9 @@ public class LikedFragment extends HomeFragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                 }
-                allPosts.addAll(posts);
-                adapter.notifyDataSetChanged();
-                swipeContainer.setRefreshing(false);
+                mAllPosts.addAll(posts);
+                mAdapter.notifyDataSetChanged();
+                mSwipeContainer.setRefreshing(false);
             }
         });
     }
