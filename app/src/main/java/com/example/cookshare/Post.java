@@ -75,6 +75,7 @@ public class Post extends ParseObject {
         put(KEY_RECIPE, recipe);
     }
 
+    //pass in string user id
     public void setFavorited(List<String> favorites) {
         put(KEY_FAVORITED, favorites);
     }

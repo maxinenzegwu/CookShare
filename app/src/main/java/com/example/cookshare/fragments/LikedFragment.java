@@ -26,6 +26,14 @@ import static com.example.cookshare.Post.KEY_FAVORITED;
  * create an instance of this fragment.
  */
 public class LikedFragment extends HomeFragment {
+//instead of using mAllposts use the adapter and include methods in adapter
+    //add method that does both
+    //for all fragments
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_liked, container, false);
+    }
 
     @Override
     protected void queryPosts() {

@@ -1,28 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView
+xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+    app:cardBackgroundColor="#d1c4e9"
+android:layout_margin="8dp"
+app:cardCornerRadius="6dp"
 
+app:cardElevation="6dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="match_parent"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:textColor="#311b92"
+
+        android:fontFamily="casual"
         tools:text="username" />
 
-    <ImageView
-        android:id="@+id/ivPost"
-        android:layout_width="393dp"
-        android:layout_height="300dp"
-        android:layout_margin="8dp"
-        android:padding="0dp"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/ivPost"
+            android:layout_width="375dp"
+            android:layout_height="300dp"
+            android:layout_margin="8dp"
+            android:padding="0dp"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <LinearLayout
+        <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -33,6 +48,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:textSize="18sp"
+            android:textColor="#311b92"
+            android:textStyle="bold"
+            android:fontFamily="casual"
             tools:text="recipe name" />
 
         <ImageButton
@@ -47,8 +65,12 @@
             android:layout_height="match_parent"
             android:inputType="number"
             android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="casual"
+            android:textColor="#311b92"
             tools:text="0" />
 
     </LinearLayout>
 
 </LinearLayout>
+</androidx.cardview.widget.CardView>

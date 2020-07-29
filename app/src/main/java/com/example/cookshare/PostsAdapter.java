@@ -31,7 +31,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * describe what class does for all classes
+ */
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> implements Filterable {
+
+    //remove unnecesssary spaces
 
     public static final String TAG = "PostsAdapter";
     protected Context mContext;
@@ -81,13 +87,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     private Filter postsFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
+           //change names to match functionality
             List<Post> filteredList = new ArrayList<>();
             if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(mPostsCopy);
             } else {
-                String filterPatter = charSequence.toString().toLowerCase().trim();
+                String filterPattern = charSequence.toString().toLowerCase().trim();
                 for (Post post : mPostsCopy) {
-                    if (post.getDescription().toLowerCase().contains(filterPatter)) {
+                    if (post.getDescription().toLowerCase().contains(filterPattern)) {
                         filteredList.add(post);
                     }
                 }
@@ -124,15 +131,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvLikes = itemView.findViewById(R.id.tvLikes);
             btnSave = itemView.findViewById(R.id.btnSave);
             btnSave.setBackgroundResource(android.R.color.transparent);
+
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     Post post = mPosts.get(position);
                     Log.i(TAG, "this is the list before click " + post.getFavorited());
+
+                    //flip if statements to have unlike condition first
                     if (post.getFavorited().contains(ParseUser.getCurrentUser().getObjectId()) == false) {
 
                         post.getFavorited().add(ParseUser.getCurrentUser().getObjectId());
+                        //remove one of these
+                        //update post class
+
                         post.setFavorited(post.getFavorited());
                         post.put("favorited", post.getFavorited());
                         view.setBackgroundResource(R.drawable.ic_baseline_star_24);
@@ -168,9 +181,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }
         }
 
-        public void savePost(Post post) {
+        private void savePost(Post post) {
 
+            //remove setlikes column and only use getFavorited list
             post.setLikes(post.getFavorited().size());
+
             post.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -184,7 +199,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
                 }
             });
-            notifyDataSetChanged();
         }
 
 

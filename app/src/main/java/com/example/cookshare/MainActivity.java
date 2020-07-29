@@ -31,56 +31,20 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     private BottomNavigationView mBottomNavigationView;
     final FragmentManager mFragmentManager = getSupportFragmentManager();
-       private List<Post> mPosts;
-
-//    private PostsAdapter adapter = new PostsAdapter(MainActivity.this, mPosts);
 
 
+
+
+//look into android toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_create, menu);
-//        queryPosts();
-//        MenuItem searchItem = menu.findItem(R.id.app_bar_search);
-//        SearchView searchView = (SearchView)searchItem.getActionView();
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) {
-//                adapter.getFilter().filter(s);
-//                return false;
-//            }
-//        });
+
         return true;
     }
 
 
-protected void queryPosts() {
-    ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-    query.include(Post.KEY_USER);
-    query.addDescendingOrder(Post.KEY_CREATED_AT);
-    query.findInBackground(new FindCallback<Post>() {
-        @Override
-        public void done(List<Post> posts, ParseException e) {
-            // check if there is an exception e then return
-            if (e != null) {
-                Log.e(TAG, "issue with getting posts", e);
-                return;
-            }
-            //iterate through each post and log each of them
-            for (Post post : posts) {
-                Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
-            }
-            mPosts.addAll(posts);
 
-
-        }
-    });
-}
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 //        if (item.getItemId() == R.id.app_bar_search) {

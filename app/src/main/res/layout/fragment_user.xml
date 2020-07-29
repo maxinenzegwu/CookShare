@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#f8bbd0"
     tools:context=".fragments.UserFragment">
 
     <LinearLayout
@@ -14,8 +15,8 @@
 
         <ImageView
             android:id="@+id/ivPost"
-            android:layout_width="157dp"
-            android:layout_height="match_parent"
+            android:layout_width="186dp"
+            android:layout_height="200dp"
             android:padding="20dp"
             app:srcCompat="@drawable/ic_baseline_person_24"
             tools:src="@tools:sample/avatars" />
@@ -31,6 +32,9 @@
                 android:layout_height="54dp"
                 android:layout_marginTop="30dp"
                 android:textAlignment="center"
+                android:textColor="#311b92"
+                android:fontFamily="casual"
+                android:textStyle="bold"
                 android:textSize="24sp"
                 tools:text="username" />
 
@@ -38,7 +42,10 @@
                 android:id="@+id/tvNumPosts"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:textColor="#311b92"
                 android:textAlignment="center"
+                android:fontFamily="casual"
+                android:textStyle="bold"
                 android:textSize="24sp"
                 tools:text="0 posts" />
         </LinearLayout>

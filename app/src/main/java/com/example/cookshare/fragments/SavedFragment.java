@@ -25,7 +25,14 @@ import java.util.List;
  * Use the {@link SavedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class SavedFragment extends HomeFragment {
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_saved, container, false);
+    }
+
     @Override
     protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);

@@ -14,9 +14,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.cookshare.CreateActivity;
@@ -56,6 +60,42 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.app_bar_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Toast.makeText(getContext(), "clicked submit!", Toast.LENGTH_SHORT).show();
+                mAdapter.getFilter().filter(s);
+
+                Log.i(TAG, "clicked submit");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                mAdapter.getFilter().filter(s);
+//                queryFilterPosts(s);
+
+                Log.i(TAG, "searching");
+                return false;
+            }
+        });
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +120,7 @@ public class HomeFragment extends Fragment {
         mAllPosts = new ArrayList<>();
         mAdapter = new PostsAdapter(getContext(), mAllPosts);
         mRvPosts.setAdapter(mAdapter);
+        //use grid layout manager instead
         mRvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
 //        SnapHelper snapHelper = new LinearSnapHelper();
 //        snapHelper.attachToRecyclerView(mRvPosts);
@@ -97,6 +138,7 @@ public class HomeFragment extends Fragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
+
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -109,6 +151,7 @@ public class HomeFragment extends Fragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                 }
+                //cleear here before adding posts
                 mAllPosts.addAll(posts);
                 mAdapter.notifyDataSetChanged();
                 mSwipeContainer.setRefreshing(false);
@@ -116,6 +159,29 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    protected void queryFilterPosts(String s) {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.include(Post.KEY_USER);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.whereContains(Post.KEY_DESCRIPTION, s);
 
-
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                // check if there is an exception e then return
+                if (e != null) {
+                    Log.e(TAG, "issue with getting posts", e);
+                    return;
+                }
+                //iterate through each post and log each of them
+                for (Post post : posts) {
+                    Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
+                }
+                //cleear here before adding posts
+                mAllPosts.addAll(posts);
+                mAdapter.notifyDataSetChanged();
+                mSwipeContainer.setRefreshing(false);
+            }
+        });
+    }
 }
