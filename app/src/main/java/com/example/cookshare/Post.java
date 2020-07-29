@@ -53,10 +53,6 @@ public class Post extends ParseObject {
     }
 
 
-    public int getLikes() {
-        return getInt(KEY_LIKES);
-    }
-
 
 
     public void setDescription(String description) {
@@ -75,14 +71,12 @@ public class Post extends ParseObject {
         put(KEY_RECIPE, recipe);
     }
 
-    //pass in string user id
+
     public void setFavorited(List<String> favorites) {
         put(KEY_FAVORITED, favorites);
     }
 
-    public void setLikes(int likes) {
-        put(KEY_LIKES, likes);
-    }
+
 
 
 }

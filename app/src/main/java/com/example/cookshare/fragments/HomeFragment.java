@@ -29,7 +29,9 @@ import com.example.cookshare.OnDoubleTapListener;
 import com.example.cookshare.Post;
 import com.example.cookshare.PostsAdapter;
 import com.example.cookshare.R;
+import com.example.cookshare.User;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -86,10 +88,19 @@ public class HomeFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                mAdapter.getFilter().filter(s);
+//                mAdapter.getFilter().filter(s);
+                ArrayList<Post> filteredList = new ArrayList<>();
 //                queryFilterPosts(s);
-
-                Log.i(TAG, "searching");
+                for (Post post : mAllPosts) {
+                    if (post.getDescription().toLowerCase().contains(s.toLowerCase())) {
+                        Log.i(TAG, "filtering post");
+                        filteredList.add(post);
+                    }
+                }
+//                queryFilterPosts(s);
+//                mAllPosts = filteredList;
+//                mAdapter.notifyDataSetChanged();
+//                Log.i(TAG, "searching");
                 return false;
             }
         });
@@ -151,7 +162,8 @@ public class HomeFragment extends Fragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                 }
-                //cleear here before adding posts
+                //clear here before adding posts
+                mAllPosts.clear();
                 mAllPosts.addAll(posts);
                 mAdapter.notifyDataSetChanged();
                 mSwipeContainer.setRefreshing(false);
@@ -163,8 +175,8 @@ public class HomeFragment extends Fragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
-        query.whereContains(Post.KEY_DESCRIPTION, s);
 
+        query.whereContains(Post.KEY_DESCRIPTION, s);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

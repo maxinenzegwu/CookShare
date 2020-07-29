@@ -18,15 +18,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
-import java.util.List;
 
 public class CreateActivity extends AppCompatActivity {
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
@@ -36,7 +33,7 @@ public class CreateActivity extends AppCompatActivity {
     private ImageView mBtnTakePicture;
     private Button mBtnPost;
     private Button mBtnCancel;
-    private ImageView mIvFood;
+    protected ImageView mIvFood;
     private File mPhotoFile;
     public String mPhotoFileName = "photo.jpg";
 
@@ -47,8 +44,8 @@ public class CreateActivity extends AppCompatActivity {
         mEtRecipe = findViewById(R.id.etRecipe);
         mEtRecipeName = findViewById(R.id.etRecipeName);
         mBtnTakePicture = findViewById(R.id.btnTakePicture);
-        mBtnPost = findViewById(R.id.btnPost);
-        mIvFood = findViewById(R.id.ivFood);
+        mBtnPost = findViewById(R.id.btnPostProfile);
+        mIvFood = findViewById(R.id.ivPerson);
         mBtnCancel = findViewById(R.id.btnCancel);
 
 mBtnCancel.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +65,7 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         mBtnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CreateActivity.this, "button is clicked!", Toast.LENGTH_SHORT).show();
+
                 String recipeName = mEtRecipeName.getText().toString();
                 String recipe = mEtRecipe.getText().toString();
                 //check if recipe name or recipe is empty
@@ -89,7 +86,7 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
 
     }
 
-    private void launchCamera() {
+    protected void launchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
@@ -144,13 +141,13 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         return file;
     }
 
-    private void savePost(String recipeName, String recipe, ParseUser currentUser, File photoFile) {
+    protected void savePost(String recipeName, String recipe, ParseUser currentUser, File photoFile) {
         Post post = new Post();
         post.setDescription(recipeName);
         post.setRecipe(recipe);
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
-        post.setLikes(0);
+
 
         post.saveInBackground(new SaveCallback() {
             @Override

@@ -17,17 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +51,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    // Add a list of items -- change to type used
+    // Add a list of items
     public void addAll(List<Post> list) {
         mPosts.addAll(list);
         notifyDataSetChanged();
     }
+
 
     @NonNull
     @Override
@@ -79,38 +76,43 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return mPosts.size();
     }
 
+    //not using filterable anymore
     @Override
     public Filter getFilter() {
-        return postsFilter;
-    }
 
-    private Filter postsFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-           //change names to match functionality
-            List<Post> filteredList = new ArrayList<>();
-            if (charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(mPostsCopy);
-            } else {
-                String filterPattern = charSequence.toString().toLowerCase().trim();
-                for (Post post : mPostsCopy) {
-                    if (post.getDescription().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(post);
+//        Log.i(TAG, "calling getFilter " + postsFilter.toString());
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                //change names to match functionality
+                List<Post> filteredList = new ArrayList<>();
+                if (charSequence == null || charSequence.length() == 0) {
+                    Log.i(TAG, "showing all posts");
+                    filteredList.addAll(mPostsCopy);
+                } else {
+                    String filterPattern = charSequence.toString().toLowerCase().trim();
+                    for (Post post : mPostsCopy) {
+                        if (post.getDescription().toLowerCase().contains(filterPattern)) {
+                            Log.i(TAG, "filtering post");
+                            filteredList.add(post);
+                        }
                     }
                 }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+                return results;
             }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-            return results;
-        }
 
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            mPosts.clear();
-            mPosts.addAll((List) filterResults.values);
-            notifyDataSetChanged();
-        }
-    };
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mPosts.clear();
+                mPosts.addAll((List) filterResults.values);
+//                notifyDataSetChanged();
+            }
+        };
+
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -127,7 +129,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvRecipeName = itemView.findViewById(R.id.tvRecipeNameDetails);
-            ivPost = itemView.findViewById(R.id.ivPost);
+            ivPost = itemView.findViewById(R.id.ivProfilePicture);
             tvLikes = itemView.findViewById(R.id.tvLikes);
             btnSave = itemView.findViewById(R.id.btnSave);
             btnSave.setBackgroundResource(android.R.color.transparent);
@@ -139,15 +141,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     Post post = mPosts.get(position);
                     Log.i(TAG, "this is the list before click " + post.getFavorited());
 
-                    //flip if statements to have unlike condition first
-                    if (post.getFavorited().contains(ParseUser.getCurrentUser().getObjectId()) == false) {
+                    if (!(post.getFavorited().contains(ParseUser.getCurrentUser().getObjectId()))) {
 
                         post.getFavorited().add(ParseUser.getCurrentUser().getObjectId());
-                        //remove one of these
-                        //update post class
-
                         post.setFavorited(post.getFavorited());
-                        post.put("favorited", post.getFavorited());
                         view.setBackgroundResource(R.drawable.ic_baseline_star_24);
 
 
@@ -174,7 +171,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public void bind(Post post) {
             tvUsername.setText(post.getUser().getUsername());
             tvRecipeName.setText(post.getDescription());
-            tvLikes.setText(Integer.toString(post.getLikes()));
+            tvLikes.setText(Integer.toString(post.getFavorited().size()));
             ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(mContext).load(post.getImage().getUrl()).into(ivPost);
@@ -183,8 +180,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         private void savePost(Post post) {
 
-            //remove setlikes column and only use getFavorited list
-            post.setLikes(post.getFavorited().size());
 
             post.saveInBackground(new SaveCallback() {
                 @Override

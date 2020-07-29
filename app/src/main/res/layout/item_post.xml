@@ -29,7 +29,7 @@ app:cardElevation="6dp">
         tools:text="username" />
 
         <ImageView
-            android:id="@+id/ivPost"
+            android:id="@+id/ivProfilePicture"
             android:layout_width="375dp"
             android:layout_height="300dp"
             android:layout_margin="8dp"

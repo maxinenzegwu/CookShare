@@ -37,7 +37,7 @@ public class SavedFragment extends HomeFragment {
     protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
-        query.addDescendingOrder(Post.KEY_LIKES);
+        query.addDescendingOrder(Post.KEY_FAVORITED);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -50,6 +50,7 @@ public class SavedFragment extends HomeFragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                 }
+                mAllPosts.clear();
                 mAllPosts.addAll(posts);
                 mAdapter.notifyDataSetChanged();
                 mSwipeContainer.setRefreshing(false);

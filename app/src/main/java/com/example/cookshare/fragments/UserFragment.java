@@ -1,10 +1,14 @@
 package com.example.cookshare.fragments;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +20,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.cookshare.GridAdapter;
 import com.example.cookshare.Post;
 import com.example.cookshare.PostsAdapter;
+import com.example.cookshare.ProfilePicture;
 import com.example.cookshare.R;
+import com.example.cookshare.User;
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -28,8 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserFragment extends HomeFragment {
-    private TextView tvUsername;
-    private TextView tvNumPosts;
+    private TextView mTvUsername;
+    private TextView mTvNumPosts;
+    private TextView mBtnChangeProfilePicture;
+    private ImageView mIvProfilePicture;
+
 
     @Override
 
@@ -42,18 +53,62 @@ public class UserFragment extends HomeFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvUsername = view.findViewById(R.id.tvUsername);
-        tvUsername.setText(ParseUser.getCurrentUser().getUsername());
+        mTvUsername = view.findViewById(R.id.tvUsername);
+        mTvUsername.setText(ParseUser.getCurrentUser().getUsername());
+        mIvProfilePicture = view.findViewById(R.id.ivProfilePicture);
+        mBtnChangeProfilePicture = view.findViewById(R.id.btnChangeProfilePicture);
+        mBtnChangeProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), ProfilePicture.class);
+                startActivity(i);
+            }
+        });
 
-        tvNumPosts = view.findViewById(R.id.tvNumPosts);
+        //user query
+        Log.i(TAG, "doing user query");
+        ParseQuery<User> userQuery = ParseQuery.getQuery(User.class);
+        userQuery.whereEqualTo(User.KEY_OBJECTID, ParseUser.getCurrentUser());
+        Log.i(TAG, "about to call find in background");
+        userQuery.findInBackground(new FindCallback<User>() {
+
+            @Override
+            public void done(List<User> users, ParseException e) {
+                if (e != null) {
+
+                    Log.e(TAG, "issue with getting user", e);
+                    return;
+                }
+
+                for (User user : users) {
+
+//                    mIvProfilePicture.setImageResource(user.getPicture());
+//                    loadImages(image, mIvProfilePicture);
+                    ParseFile image = (ParseFile) user.getPicture();
+                    image.getDataInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] data, ParseException e) {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            mIvProfilePicture.setImageBitmap(bitmap);
+                        }
+                    });
+                    Log.i(TAG, "User: " + user.getObject());
+                }
+            }
+
+        });
+
+
+        //post query
+        mTvNumPosts = view.findViewById(R.id.tvNumPosts);
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
         query.include(Post.KEY_USER);
         try {
-            if (query.count() == 1){
-            tvNumPosts.setText(Integer.toString(query.count()) + " post");}
-            else{
-                tvNumPosts.setText(Integer.toString(query.count()) + " posts");
+            if (query.count() == 1) {
+                mTvNumPosts.setText(Integer.toString(query.count()) + " post");
+            } else {
+                mTvNumPosts.setText(Integer.toString(query.count()) + " posts");
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -83,7 +138,25 @@ public class UserFragment extends HomeFragment {
 
 
     }
+    private void loadImages(ParseFile thumbnail, final ImageView img) {
 
+        if (thumbnail != null) {
+            Log.i(TAG, "thumbnail is not null");
+            thumbnail.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        img.setImageBitmap(bmp);
+                    } else {
+                    }
+                }
+            });
+        } else {
+            Log.i(TAG, "thumbnail is null");
+            img.setImageResource(R.drawable.ic_baseline_person_24);
+        }
+    }// load image
     @Override
     protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
@@ -103,6 +176,7 @@ public class UserFragment extends HomeFragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                 }
+                mAllPosts.clear();
                 mAllPosts.addAll(posts);
                 mAdapter.notifyDataSetChanged();
                 mSwipeContainer.setRefreshing(false);

@@ -6,22 +6,13 @@
     android:layout_width="match_parent"
     android:background="#ffcdd2"
     android:layout_height="match_parent"
-    tools:context=".CreateActivity"
+    tools:context=".ProfilePicture"
     android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/etRecipeName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:ems="10"
-        android:hint="Recipe Name"
-        android:inputType="textPersonName" />
 
     <ImageView
         android:id="@+id/ivPerson"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_width="395dp"
+        android:layout_height="364dp"
         android:layout_margin="8dp"
         android:scaleType="centerCrop"
         tools:src="@tools:sample/avatars" />
@@ -30,22 +21,16 @@
         android:id="@+id/btnTakePicture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="0dp"
         android:background="#ef9a9a"
         android:src="@android:drawable/ic_menu_camera" />
-
-    <EditText
-        android:id="@+id/etRecipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:ems="10"
-        android:hint="Recipe "
-        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/btnPostProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:background="#ef9a9a"
         android:text="post" />
@@ -54,6 +39,7 @@
         android:id="@+id/btnCancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:background="#ef9a9a"
         android:text="cancel" />
 
