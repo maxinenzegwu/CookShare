@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * describe what class does for all classes
  */
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> implements Filterable {
+public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>  {
 
     //remove unnecesssary spaces
 
@@ -76,43 +76,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return mPosts.size();
     }
 
-    //not using filterable anymore
-    @Override
-    public Filter getFilter() {
 
-//        Log.i(TAG, "calling getFilter " + postsFilter.toString());
-        return new Filter() {
-
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                //change names to match functionality
-                List<Post> filteredList = new ArrayList<>();
-                if (charSequence == null || charSequence.length() == 0) {
-                    Log.i(TAG, "showing all posts");
-                    filteredList.addAll(mPostsCopy);
-                } else {
-                    String filterPattern = charSequence.toString().toLowerCase().trim();
-                    for (Post post : mPostsCopy) {
-                        if (post.getDescription().toLowerCase().contains(filterPattern)) {
-                            Log.i(TAG, "filtering post");
-                            filteredList.add(post);
-                        }
-                    }
-                }
-                FilterResults results = new FilterResults();
-                results.values = filteredList;
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mPosts.clear();
-                mPosts.addAll((List) filterResults.values);
-//                notifyDataSetChanged();
-            }
-        };
-
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

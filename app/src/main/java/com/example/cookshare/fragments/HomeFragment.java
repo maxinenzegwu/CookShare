@@ -80,27 +80,17 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 Toast.makeText(getContext(), "clicked submit!", Toast.LENGTH_SHORT).show();
-                mAdapter.getFilter().filter(s);
-
+                queryFilterPosts(s);
                 Log.i(TAG, "clicked submit");
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-//                mAdapter.getFilter().filter(s);
-                ArrayList<Post> filteredList = new ArrayList<>();
-//                queryFilterPosts(s);
-                for (Post post : mAllPosts) {
-                    if (post.getDescription().toLowerCase().contains(s.toLowerCase())) {
-                        Log.i(TAG, "filtering post");
-                        filteredList.add(post);
-                    }
-                }
-//                queryFilterPosts(s);
-//                mAllPosts = filteredList;
-//                mAdapter.notifyDataSetChanged();
-//                Log.i(TAG, "searching");
+
+                queryFilterPosts(s);
+                mAdapter.notifyDataSetChanged();
+                Log.i(TAG, "searching");
                 return false;
             }
         });
@@ -189,7 +179,8 @@ public class HomeFragment extends Fragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                 }
-                //cleear here before adding posts
+                //clear here before adding posts
+                mAllPosts.clear();
                 mAllPosts.addAll(posts);
                 mAdapter.notifyDataSetChanged();
                 mSwipeContainer.setRefreshing(false);

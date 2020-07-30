@@ -19,10 +19,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.File;
 import java.util.List;
@@ -106,23 +108,35 @@ public class ProfilePicture extends CreateActivity {
 
     protected void changePicture(final File photoFile) {
         Log.i(TAG, "trying to change picture");
-        ParseQuery<User> query = ParseQuery.getQuery(User.class);
-        query.whereEqualTo(User.KEY_OBJECTID, ParseUser.getCurrentUser().getObjectId());
-
-        query.findInBackground(new FindCallback<User>() {
+        ParseUser myUser = ParseUser.getCurrentUser();
+        myUser.put(User.KEY_PICTURE, new ParseFile(photoFile));
+        myUser.saveInBackground(new SaveCallback() {
             @Override
-            public void done(List<User> users, ParseException e) {
+            public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "issue with getting user", e);
                     return;
                 }
-                //iterate through each post and log each of them
-                for (User user : users) {
-                    user.setPicture(new ParseFile(photoFile));
-                    Log.i(TAG, "changing picture");
-                }
+                Log.i(TAG, "profile picture updated successfully");
             }
         });
+//        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+//        query.whereEqualTo(User.KEY_OBJECTID, ParseUser.getCurrentUser().getObjectId());
+//
+//        query.findInBackground(new FindCallback<User>() {
+//            @Override
+//            public void done(List<User> users, ParseException e) {
+//                if (e != null) {
+//                    Log.e(TAG, "issue with getting user", e);
+//                    return;
+//                }
+//                //iterate through each post and log each of them
+//                for (User user : users) {
+//                    user.setPicture(new ParseFile(photoFile));
+
+//                }
+//            }
+//        });
 
 
     }

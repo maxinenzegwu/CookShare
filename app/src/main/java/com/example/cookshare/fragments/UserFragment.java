@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.cookshare.GridAdapter;
 import com.example.cookshare.Post;
 import com.example.cookshare.PostsAdapter;
@@ -66,37 +67,42 @@ public class UserFragment extends HomeFragment {
         });
 
         //user query
-        Log.i(TAG, "doing user query");
-        ParseQuery<User> userQuery = ParseQuery.getQuery(User.class);
-        userQuery.whereEqualTo(User.KEY_OBJECTID, ParseUser.getCurrentUser());
-        Log.i(TAG, "about to call find in background");
-        userQuery.findInBackground(new FindCallback<User>() {
+//        Log.i(TAG, "doing user query");
+//        ParseQuery<User> userQuery = ParseQuery.getQuery(User.class);
+//        userQuery.whereEqualTo(User.KEY_OBJECTID, ParseUser.getCurrentUser());
+//        Log.i(TAG, "about to call find in background");
+//        userQuery.findInBackground(new FindCallback<User>() {
+//
+//            @Override
+//            public void done(List<User> users, ParseException e) {
+//                if (e != null) {
+//
+//                    Log.e(TAG, "issue with getting user", e);
+//                    return;
+//                }
+//
+//                for (User user : users) {
+//
+////                    mIvProfilePicture.setImageResource(user.getPicture());
+////                    loadImages(image, mIvProfilePicture);
+//                    ParseFile image = (ParseFile) user.getPicture();
+//                    image.getDataInBackground(new GetDataCallback() {
+//                        @Override
+//                        public void done(byte[] data, ParseException e) {
+//                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+//                            mIvProfilePicture.setImageBitmap(bitmap);
+//                        }
+//                    });
+//                    Log.i(TAG, "User: " + user.getObject());
+//                }
+//            }
+//
+//        });
+        ParseFile profileImage = ParseUser.getCurrentUser().getParseFile(User.KEY_PICTURE);
 
-            @Override
-            public void done(List<User> users, ParseException e) {
-                if (e != null) {
-
-                    Log.e(TAG, "issue with getting user", e);
-                    return;
-                }
-
-                for (User user : users) {
-
-//                    mIvProfilePicture.setImageResource(user.getPicture());
-//                    loadImages(image, mIvProfilePicture);
-                    ParseFile image = (ParseFile) user.getPicture();
-                    image.getDataInBackground(new GetDataCallback() {
-                        @Override
-                        public void done(byte[] data, ParseException e) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                            mIvProfilePicture.setImageBitmap(bitmap);
-                        }
-                    });
-                    Log.i(TAG, "User: " + user.getObject());
-                }
-            }
-
-        });
+        if (profileImage != null) {
+            Glide.with(getContext()).load(profileImage.getUrl()).into(mIvProfilePicture);
+        }
 
 
         //post query
