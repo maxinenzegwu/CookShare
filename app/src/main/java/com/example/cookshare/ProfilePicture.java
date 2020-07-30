@@ -120,23 +120,6 @@ public class ProfilePicture extends CreateActivity {
                 Log.i(TAG, "profile picture updated successfully");
             }
         });
-//        ParseQuery<User> query = ParseQuery.getQuery(User.class);
-//        query.whereEqualTo(User.KEY_OBJECTID, ParseUser.getCurrentUser().getObjectId());
-//
-//        query.findInBackground(new FindCallback<User>() {
-//            @Override
-//            public void done(List<User> users, ParseException e) {
-//                if (e != null) {
-//                    Log.e(TAG, "issue with getting user", e);
-//                    return;
-//                }
-//                //iterate through each post and log each of them
-//                for (User user : users) {
-//                    user.setPicture(new ParseFile(photoFile));
-
-//                }
-//            }
-//        });
 
 
     }

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#43a047"
     tools:context=".LoginActivity">
 
     <EditText
@@ -40,8 +41,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:background="#b9f6ca"
+        android:textStyle="bold"
+        android:fontFamily="casual"
+        android:textColor="#1b5e20"
         android:layout_marginStart="10dp"
         android:layout_marginTop="365dp"
         android:layout_marginEnd="10dp"
         android:text="sign up" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="126dp"
+        android:layout_marginTop="68dp"
+        android:text="CookShare"
+        android:fontFamily="casual"
+        android:textStyle="bold"
+        android:textColor="#b9f6ca"
+        android:textSize="30sp" />
 </RelativeLayout>

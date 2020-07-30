@@ -52,6 +52,42 @@ public class UserFragment extends HomeFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+
+        protected void queryFilterPosts(String s) {
+            ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+            query.include(Post.KEY_USER);
+        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
+
+            query.whereContains(Post.KEY_DESCRIPTION, s);
+            query.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> posts, ParseException e) {
+                    // check if there is an exception e then return
+                    if (e != null) {
+                        Log.e(TAG, "issue with getting posts", e);
+                        return;
+                    }
+                    //iterate through each post and log each of them
+                    for (Post post : posts) {
+                        Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
+                    }
+                    //clear here before adding posts
+                    mAllPosts.clear();
+                    mAllPosts.addAll(posts);
+                    mAdapter.notifyDataSetChanged();
+                    mSwipeContainer.setRefreshing(false);
+                }
+            });
+        }
+
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTvUsername = view.findViewById(R.id.tvUsername);
@@ -66,38 +102,6 @@ public class UserFragment extends HomeFragment {
             }
         });
 
-        //user query
-//        Log.i(TAG, "doing user query");
-//        ParseQuery<User> userQuery = ParseQuery.getQuery(User.class);
-//        userQuery.whereEqualTo(User.KEY_OBJECTID, ParseUser.getCurrentUser());
-//        Log.i(TAG, "about to call find in background");
-//        userQuery.findInBackground(new FindCallback<User>() {
-//
-//            @Override
-//            public void done(List<User> users, ParseException e) {
-//                if (e != null) {
-//
-//                    Log.e(TAG, "issue with getting user", e);
-//                    return;
-//                }
-//
-//                for (User user : users) {
-//
-////                    mIvProfilePicture.setImageResource(user.getPicture());
-////                    loadImages(image, mIvProfilePicture);
-//                    ParseFile image = (ParseFile) user.getPicture();
-//                    image.getDataInBackground(new GetDataCallback() {
-//                        @Override
-//                        public void done(byte[] data, ParseException e) {
-//                            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-//                            mIvProfilePicture.setImageBitmap(bitmap);
-//                        }
-//                    });
-//                    Log.i(TAG, "User: " + user.getObject());
-//                }
-//            }
-//
-//        });
         ParseFile profileImage = ParseUser.getCurrentUser().getParseFile(User.KEY_PICTURE);
 
         if (profileImage != null) {

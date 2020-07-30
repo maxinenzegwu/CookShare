@@ -5,35 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ffab91"
     tools:context=".PostRecipeActivity">
 
     <TextView
         android:id="@+id/tvHowToMakeIt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
         android:text="How to make it!"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textColor="#bf360c"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/ivFoodDetails"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="143dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tvRecipeNameDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
         android:textAlignment="center"
+        android:textColor="#bf360c"
         android:textSize="18sp"
+        android:textStyle="bold"
         tools:text="Recipe Name" />
 
-    <TextView
-        android:id="@+id/tvRecipeDetails"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        tools:text="this is the recipe" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/tvRecipeDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#bf360c"
+
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="this is the recipe" />
+    </ScrollView>
 </LinearLayout>

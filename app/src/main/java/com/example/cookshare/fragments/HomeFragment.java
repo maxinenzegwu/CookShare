@@ -79,8 +79,9 @@ public class HomeFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Toast.makeText(getContext(), "clicked submit!", Toast.LENGTH_SHORT).show();
-                queryFilterPosts(s);
+                Toast.makeText(getContext(), "searching!", Toast.LENGTH_SHORT).show();
+                queryFilterPosts(s.trim());
+                mAdapter.notifyDataSetChanged();
                 Log.i(TAG, "clicked submit");
                 return false;
             }
@@ -88,9 +89,15 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
 
-                queryFilterPosts(s);
-                mAdapter.notifyDataSetChanged();
-                Log.i(TAG, "searching");
+                if (s.trim() == ""){
+                    queryPosts();
+                }
+                else{
+                    queryFilterPosts(s.trim());
+                    mAdapter.notifyDataSetChanged();
+                    Log.i(TAG, "searching");
+
+                }
                 return false;
             }
         });
@@ -123,9 +130,9 @@ public class HomeFragment extends Fragment {
         mRvPosts.setAdapter(mAdapter);
         //use grid layout manager instead
         mRvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
-//        SnapHelper snapHelper = new LinearSnapHelper();
-//        snapHelper.attachToRecyclerView(mRvPosts);
-//        mRvPosts.setItemAnimator(new SlideInDownAnimator());
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(mRvPosts);
+        mRvPosts.setItemAnimator(new SlideInDownAnimator());
         queryPosts();
         mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,

@@ -20,6 +20,7 @@
             android:layout_width="186dp"
             android:layout_height="200dp"
             android:padding="20dp"
+            app:srcCompat="@drawable/ic_baseline_person_24"
             tools:src="@tools:sample/avatars" />
 
         <LinearLayout
