@@ -37,7 +37,7 @@ public class SavedFragment extends HomeFragment {
     protected void queryFilterPosts(String s) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
-        query.whereContains(Post.KEY_DESCRIPTION, s);
+        query.whereMatches(Post.KEY_DESCRIPTION,"(?i)" + s);
         query.addDescendingOrder(Post.KEY_FAVORITED);
         query.findInBackground(new FindCallback<Post>() {
             @Override

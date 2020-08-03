@@ -67,7 +67,7 @@ public class LikedFragment extends HomeFragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.whereContains(Post.KEY_FAVORITED, ParseUser.getCurrentUser().getObjectId());
-        query.whereContains(Post.KEY_DESCRIPTION, s);
+        query.whereMatches(Post.KEY_DESCRIPTION,"(?i)" + s);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

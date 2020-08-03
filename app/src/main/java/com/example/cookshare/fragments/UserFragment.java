@@ -64,7 +64,7 @@ public class UserFragment extends HomeFragment {
             query.include(Post.KEY_USER);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
 
-            query.whereContains(Post.KEY_DESCRIPTION, s);
+        query.whereMatches(Post.KEY_DESCRIPTION,"(?i)" + s);
             query.findInBackground(new FindCallback<Post>() {
                 @Override
                 public void done(List<Post> posts, ParseException e) {
