@@ -10,6 +10,8 @@
     tools:context=".LoginActivity">
 
 
+
+
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
@@ -50,6 +52,20 @@
         android:background="#b3e5fc"
         android:layout_marginEnd="10dp"
         android:text="log in" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btnLoginFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnLogin"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="30dp"
+        android:text="Login with facebook" />
 
     <TextView
         android:id="@+id/textView"

@@ -173,10 +173,8 @@ public class HomeFragment extends Fragment {
         query.include(Post.KEY_USER);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
 
-//        query.whereContains(Post.KEY_DESCRIPTION, s);
-        //change this to regular expression
-        //use 3 paramater version, have s as last parameter
-//        query.whereMatches(Post.KEY_DESCRIPTION,"~^(?=(\\S{8,})?)(?=(\\S*[a-z])?)(?=(\\S*[A-Z])?)(?=(\\S*\\d)?)\\S*$~",s);
+
+        // make sure the most up to date query result is showing
         query.whereMatches(Post.KEY_DESCRIPTION,"(?i)" + s);
         query.findInBackground(new FindCallback<Post>() {
             @Override

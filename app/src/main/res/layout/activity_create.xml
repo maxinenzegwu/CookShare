@@ -33,22 +33,22 @@
         android:background="#ef9a9a"
         android:src="@android:drawable/ic_menu_camera" />
 
-    <EditText
-        android:id="@+id/etRecipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:ems="10"
-        android:hint="Recipe "
-        android:inputType="textPersonName" />
-
     <Button
         android:id="@+id/btnPostProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="#ef9a9a"
         android:text="post" />
+
+    <Button
+        android:id="@+id/btnChooseGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="#ef9a9a"
+        android:text="choose from gallery" />
 
     <Button
         android:id="@+id/btnCancel"
@@ -56,5 +56,14 @@
         android:layout_height="wrap_content"
         android:background="#ef9a9a"
         android:text="cancel" />
+
+    <EditText
+        android:id="@+id/etRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:ems="10"
+        android:hint="Recipe "
+        android:inputType="textLongMessage|textMultiLine|textPersonName" />
 
 </LinearLayout>

@@ -55,7 +55,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public void addAll(List<Post> list) {
         mPosts.addAll(list);
         notifyDataSetChanged();
-    }
+
+}
 
 
     @NonNull
@@ -131,6 +132,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             itemView.setOnClickListener(this);
         }
 
+//itemView.setOnTouchListener(new OnDoubleTapListener(this) {
+//            @Override
+//            public void onDoubleTap(MotionEvent e) {
+//                Toast.makeText(MainActivity.this, "Double Tap", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         public void bind(Post post) {
             tvUsername.setText(post.getUser().getUsername());

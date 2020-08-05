@@ -36,6 +36,15 @@
         android:text="post" />
 
     <Button
+        android:id="@+id/btnChoosePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="#ef9a9a"
+        android:text="Choose From Gallery" />
+
+    <Button
         android:id="@+id/btnCancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

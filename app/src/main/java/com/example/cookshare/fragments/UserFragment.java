@@ -1,6 +1,8 @@
 package com.example.cookshare.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -57,6 +60,7 @@ public class UserFragment extends HomeFragment {
         setHasOptionsMenu(true);
     }
 
+
     @Override
 
         protected void queryFilterPosts(String s) {
@@ -64,7 +68,7 @@ public class UserFragment extends HomeFragment {
             query.include(Post.KEY_USER);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
 
-        query.whereMatches(Post.KEY_DESCRIPTION,"(?i)" + s);
+        query.whereMatches(Post.KEY_DESCRIPTION,"(?i)%s" + s);
             query.findInBackground(new FindCallback<Post>() {
                 @Override
                 public void done(List<Post> posts, ParseException e) {
@@ -104,8 +108,14 @@ public class UserFragment extends HomeFragment {
 
         ParseFile profileImage = ParseUser.getCurrentUser().getParseFile(User.KEY_PICTURE);
 
+
         if (profileImage != null) {
-            Glide.with(getContext()).load(profileImage.getUrl()).into(mIvProfilePicture);
+            try {
+                Glide.with(getContext()).load(profileImage.getUrl()).into(mIvProfilePicture);
+            }
+            catch (Exception e) {
+                Glide.with(getContext()).load(profileImage).into(mIvProfilePicture);
+            }
         }
 
 
@@ -148,6 +158,7 @@ public class UserFragment extends HomeFragment {
 
 
     }
+
     private void loadImages(ParseFile thumbnail, final ImageView img) {
 
         if (thumbnail != null) {
