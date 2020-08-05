@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -31,7 +32,7 @@ import java.util.List;
 /**
  * describe what class does for all classes
  */
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>  {
+public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
     //remove unnecesssary spaces
 
@@ -56,7 +57,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         mPosts.addAll(list);
         notifyDataSetChanged();
 
-}
+    }
 
 
     @NonNull
@@ -78,7 +79,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
 
-
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvUsername;
@@ -97,14 +97,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivPost = itemView.findViewById(R.id.ivProfilePicture);
             tvLikes = itemView.findViewById(R.id.tvLikes);
             btnSave = itemView.findViewById(R.id.btnSave);
-            btnSave.setBackgroundResource(android.R.color.transparent);
+
 
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     Post post = mPosts.get(position);
-                    Log.i(TAG, "this is the list before click " + post.getFavorited());
+
 
                     if (!(post.getFavorited().contains(ParseUser.getCurrentUser().getObjectId()))) {
 
@@ -129,17 +129,46 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 }
 
             });
-            itemView.setOnClickListener(this);
+
+
+            //double tap listener
+            itemView.setOnTouchListener(new OnDoubleTapListener(mContext) {
+
+                @Override
+                public void onDoubleTap(MotionEvent e) {
+                    int position = getAdapterPosition();
+                    Post post = mPosts.get(position);
+
+                    if (!(post.getFavorited().contains(ParseUser.getCurrentUser().getObjectId()))) {
+
+                        post.getFavorited().add(ParseUser.getCurrentUser().getObjectId());
+                        post.setFavorited(post.getFavorited());
+                        btnSave.setBackgroundResource(R.drawable.ic_baseline_star_24);
+
+
+                    } else if (post.getFavorited().contains(ParseUser.getCurrentUser().getObjectId())) {
+
+                        post.getFavorited().remove(ParseUser.getCurrentUser().getObjectId());
+                        post.setFavorited(post.getFavorited());
+                        post.put("favorited", post.getFavorited());
+                        btnSave.setBackgroundResource(android.R.color.transparent);
+
+
+                    }
+
+                    savePost(post);
+                    notifyDataSetChanged();
+                }
+            });
         }
 
-//itemView.setOnTouchListener(new OnDoubleTapListener(this) {
-//            @Override
-//            public void onDoubleTap(MotionEvent e) {
-//                Toast.makeText(MainActivity.this, "Double Tap", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         public void bind(Post post) {
+            if (post.getFavorited().contains(ParseUser.getCurrentUser().getObjectId())) {
+                btnSave.setBackgroundResource(R.drawable.ic_baseline_star_24);
+            } else {
+                btnSave.setBackgroundResource(android.R.color.transparent);
+            }
             tvUsername.setText(post.getUser().getUsername());
             tvRecipeName.setText(post.getDescription());
             tvLikes.setText(Integer.toString(post.getFavorited().size()));
@@ -168,9 +197,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         }
 
 
+
         @Override
         public void onClick(View view) {
-            // gets item position
+
             int position = getAdapterPosition();
             // make sure the position is valid, i.e. actually exists in the view
             if (position != RecyclerView.NO_POSITION) {
@@ -185,5 +215,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
             }
         }
+
+
     }
 }

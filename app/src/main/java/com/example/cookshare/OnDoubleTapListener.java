@@ -1,6 +1,7 @@
 package com.example.cookshare;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,7 @@ public class OnDoubleTapListener implements View.OnTouchListener {
 
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
         return gestureDetector.onTouchEvent(motionEvent);
+
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -27,7 +29,9 @@ public class OnDoubleTapListener implements View.OnTouchListener {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             OnDoubleTapListener.this.onDoubleTap(e);
+            Log.i("DoubleTapClass", " " + super.onDoubleTap(e));
             return super.onDoubleTap(e);
+
         }
     }
 
