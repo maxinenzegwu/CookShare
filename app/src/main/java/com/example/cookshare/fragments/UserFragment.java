@@ -57,13 +57,14 @@ public class UserFragment extends HomeFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(false);
     }
 
 
     @Override
 
         protected void queryFilterPosts(String s) {
+
             ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
             query.include(Post.KEY_USER);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
@@ -81,10 +82,13 @@ public class UserFragment extends HomeFragment {
                     for (Post post : posts) {
                         Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                     }
+                    //clear here before adding posts
 
+                    mAllPosts.clear();
                     mAllPosts.addAll(posts);
-                    mAdapter.notifyDataSetChanged();
+
                     mSwipeContainer.setRefreshing(false);
+                    mAdapter.notifyDataSetChanged();
                 }
             });
         }
