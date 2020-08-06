@@ -160,8 +160,7 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
             Bitmap selectedImage = loadFromUri(photoUri);
 
             // Load the selected image into a preview
-            ImageView ivPreview = (ImageView) findViewById(R.id.ivPerson);
-            ivPreview.setImageBitmap(selectedImage);
+            mIvFood.setImageBitmap(selectedImage);
         }
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {

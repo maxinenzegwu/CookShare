@@ -81,8 +81,7 @@ public class UserFragment extends HomeFragment {
                     for (Post post : posts) {
                         Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
                     }
-                    //clear here before adding posts
-                    mAllPosts.clear();
+
                     mAllPosts.addAll(posts);
                     mAdapter.notifyDataSetChanged();
                     mSwipeContainer.setRefreshing(false);
