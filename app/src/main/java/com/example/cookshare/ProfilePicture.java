@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.cookshare.fragments.UserFragment;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -43,22 +44,22 @@ public class ProfilePicture extends CreateActivity {
     private ImageView mIvPerson;
     private File mPhotoFile;
 
-    public String mPhotoFileName = "photo.jpg";
+    public String mPhotoFileName = "photo.jpFg";
 
     @Override
-        protected void launchCamera() {
-            // create Intent to take a picture and return control to the calling application
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Create a File reference for future access
-            mPhotoFile = getPhotoFileUri(mPhotoFileName);
-            // wrap File object into a content provider
-            Uri fileProvider = FileProvider.getUriForFile(ProfilePicture.this, "com.codepath.fileprovider", mPhotoFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                // Start the image capture intent to take photo
-                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-            }
+    protected void launchCamera() {
+        // create Intent to take a picture and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Create a File reference for future access
+        mPhotoFile = getPhotoFileUri(mPhotoFileName);
+        // wrap File object into a content provider
+        Uri fileProvider = FileProvider.getUriForFile(ProfilePicture.this, "com.codepath.fileprovider", mPhotoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Start the image capture intent to take photo
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +98,11 @@ public class ProfilePicture extends CreateActivity {
                     return;
                 }
                 changePicture(mPhotoFile);
-
+                setResult(UserFragment.UPDATE_IMAGE_ACTIVITY_REQUEST_CODE);
                 finish();
             }
         });
     }
-
 
 
     public void onPickPhoto(View view) {
@@ -120,7 +120,7 @@ public class ProfilePicture extends CreateActivity {
         Bitmap image = null;
         try {
             // check version of Android on device
-            if(Build.VERSION.SDK_INT > 27){
+            if (Build.VERSION.SDK_INT > 27) {
                 // on newer versions of Android, use the new decodeBitmap method
                 ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), photoUri);
                 image = ImageDecoder.decodeBitmap(source);

@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserFragment extends HomeFragment {
+
+    public static final int UPDATE_IMAGE_ACTIVITY_REQUEST_CODE = 40;
     private TextView mTvUsername;
     private TextView mTvNumPosts;
     private TextView mBtnChangeProfilePicture;
@@ -86,13 +88,27 @@ public class UserFragment extends HomeFragment {
 
                     mAllPosts.clear();
                     mAllPosts.addAll(posts);
-
                     mSwipeContainer.setRefreshing(false);
                     mAdapter.notifyDataSetChanged();
                 }
             });
         }
 
+
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        ParseFile profileImage = ParseUser.getCurrentUser().getParseFile(User.KEY_PICTURE);
+//        if (profileImage != null) {
+//            try {
+//                Glide.with(getContext()).load(profileImage.getUrl()).into(mIvProfilePicture);
+//            }
+//            catch (Exception e) {
+//                Glide.with(getContext()).load(profileImage).into(mIvProfilePicture);
+//            }
+//        }
+//    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -105,11 +121,12 @@ public class UserFragment extends HomeFragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), ProfilePicture.class);
-                startActivity(i);
+                startActivityForResult(i, UPDATE_IMAGE_ACTIVITY_REQUEST_CODE);
             }
         });
 
         ParseFile profileImage = ParseUser.getCurrentUser().getParseFile(User.KEY_PICTURE);
+
 
 
         if (profileImage != null) {
@@ -181,6 +198,7 @@ public class UserFragment extends HomeFragment {
             img.setImageResource(R.drawable.ic_baseline_person_24);
         }
     }// load image
+
     @Override
     protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
