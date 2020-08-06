@@ -33,9 +33,23 @@ public class OnDoubleTapListener implements View.OnTouchListener {
             return super.onDoubleTap(e);
 
         }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            OnDoubleTapListener.this.onSingleTapConfirmed(e);
+            Log.i("SingleTapConfirmedClass", " " + super.onSingleTapConfirmed(e));
+            return super.onSingleTapConfirmed(e);
+
+        }
+
+
     }
 
     public void onDoubleTap(MotionEvent e) {
+        // To be overridden when implementing listener
+    }
+
+    public void onSingleTapConfirmed(MotionEvent e) {
         // To be overridden when implementing listener
     }
 }

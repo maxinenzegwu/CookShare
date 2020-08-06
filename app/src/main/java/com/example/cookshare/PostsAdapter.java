@@ -133,6 +133,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
             //double tap listener
             itemView.setOnTouchListener(new OnDoubleTapListener(mContext) {
+                @Override
+                public void onSingleTapConfirmed(MotionEvent e) {
+                    int position = getAdapterPosition();
+                    // make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // get the post at the position, this won't work if the class is static
+                        Post post = mPosts.get(position);
+                        // create intent for the new activity
+                        Intent intent = new Intent(mContext, PostRecipeActivity.class);
+                        // serialize the post using parceler, use its short name as a key
+                        intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
+                        // show the activity
+                        mContext.startActivity(intent);
+
+                    }
+                }
 
                 @Override
                 public void onDoubleTap(MotionEvent e) {
@@ -160,6 +176,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     notifyDataSetChanged();
                 }
             });
+            itemView.setOnClickListener(this);
         }
 
 
