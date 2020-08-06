@@ -104,6 +104,7 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getPackageManager()) != null) {
@@ -127,12 +128,14 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return image;
     }
 
     protected void launchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         // Create a File reference for future access
         mPhotoFile = getPhotoFileUri(mPhotoFileName);
 

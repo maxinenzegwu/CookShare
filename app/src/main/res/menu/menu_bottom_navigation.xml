@@ -17,4 +17,9 @@
         android:icon="@drawable/ic_baseline_trending_up_24"
         android:title="Popular"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_favorites"
+        android:icon="@drawable/ic_baseline_star_24"
+        android:title="favorites"
+        app:showAsAction="always" />
 </menu>

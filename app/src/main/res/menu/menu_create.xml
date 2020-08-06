@@ -7,11 +7,6 @@
         android:title="logout"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_favorites"
-        android:icon="@drawable/ic_baseline_star_24"
-        android:title="Favorites"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/action_create"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Create"

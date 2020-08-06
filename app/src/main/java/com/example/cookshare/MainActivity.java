@@ -93,13 +93,18 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_home:
                         fragment = new HomeFragment();
                         break;
-                    case R.id.action_saved:
-                        fragment = new SavedFragment();
+                    case R.id.action_favorites:
+                        fragment = new LikedFragment();
                         break;
                     case R.id.action_profile:
-                    default:
                         fragment = new UserFragment();
                         break;
+                    case R.id.action_saved:
+                        fragment = new SavedFragment();
+
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + menuItem.getItemId());
                 }
                 mFragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
                 return true;

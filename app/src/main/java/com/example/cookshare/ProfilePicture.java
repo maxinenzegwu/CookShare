@@ -44,7 +44,7 @@ public class ProfilePicture extends CreateActivity {
     private ImageView mIvPerson;
     private File mPhotoFile;
 
-    public String mPhotoFileName = "photo.jpFg";
+    public String mPhotoFileName = "photo.jpg";
 
     @Override
     protected void launchCamera() {
@@ -110,6 +110,8 @@ public class ProfilePicture extends CreateActivity {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+
+
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Bring up gallery to select a photo
             startActivityForResult(intent, PICK_PHOTO_CODE);
@@ -131,7 +133,7 @@ public class ProfilePicture extends CreateActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        mPhotoFile = new File (photoUri.getPath());
         return image;
     }
 
@@ -144,7 +146,7 @@ public class ProfilePicture extends CreateActivity {
             // Load the image located at photoUri into selectedImage
             Bitmap selectedImage = loadFromUri(photoUri);
 
-            // Load the selected image into a preview
+            // Load the selected image into  preview
             mIvPerson.setImageBitmap(selectedImage);
         }
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -164,6 +166,7 @@ public class ProfilePicture extends CreateActivity {
         Log.i(TAG, "trying to change picture");
         ParseUser myUser = ParseUser.getCurrentUser();
         myUser.put(User.KEY_PICTURE, new ParseFile(photoFile));
+
         myUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
