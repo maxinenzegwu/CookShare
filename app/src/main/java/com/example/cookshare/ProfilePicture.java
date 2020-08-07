@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
@@ -30,10 +31,12 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -93,13 +96,17 @@ public class ProfilePicture extends CreateActivity {
                 launchCamera();
             }
         });
+
         mBtnPostProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
                 if (mPhotoFile == null || mIvPerson.getDrawable() == null) {
-                    Toast.makeText(ProfilePicture.this, "There is no image!", Toast.LENGTH_SHORT).show();
-                    return;
+                    if (pickedPhotoFile == null) {
+                        Toast.makeText(ProfilePicture.this, "There is no image!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
 
                 changePicture(mPhotoFile);
@@ -125,8 +132,6 @@ public class ProfilePicture extends CreateActivity {
     public Bitmap loadFromUri(Uri photoUri) {
         Bitmap image = null;
 
-        mPhotoFile = (new File(photoUri.getPath() + File.separator + mPhotoFileName));
-
 
         try {
             // check version of Android on device
@@ -145,6 +150,19 @@ public class ProfilePicture extends CreateActivity {
         return image;
     }
 
+    private ParseFile pickedPhotoFile = null;
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -156,6 +174,24 @@ public class ProfilePicture extends CreateActivity {
 
             // Load the selected image into  preview
             mIvPerson.setImageBitmap(selectedImage);
+            InputStream input = null;
+
+            try {
+                input = getContentResolver().openInputStream(photoUri);
+                pickedPhotoFile = new ParseFile(getBytes(input));
+            } catch (FileNotFoundException e) {
+                Log.e(TAG, "file not found", e);
+            } catch (IOException e) {
+                Log.e(TAG, "I/O exception", e);
+            } finally {
+                if (input != null) {
+                    try {
+                        input.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, "I/O exception while trying to close input stream", e);
+                    }
+                }
+            }
 
 
         }
@@ -173,12 +209,21 @@ public class ProfilePicture extends CreateActivity {
     }
 
     protected void changePicture(final File photoFile) {
+
         Log.i(TAG, "trying to change picture");
-        ParseUser myUser = ParseUser.getCurrentUser();
-        myUser.put(User.KEY_PICTURE, new ParseFile(photoFile));
+        final ParseUser myUser = ParseUser.getCurrentUser();
+        final ParseFile profilePhoto;
+        if (pickedPhotoFile != null) {
+            profilePhoto = pickedPhotoFile;
+        } else {
+            profilePhoto = new ParseFile(photoFile);
+        }
+        myUser.put(User.KEY_PICTURE, profilePhoto);
+
         myUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+
                 if (e != null) {
                     Log.e(TAG, "issue with getting user", e);
                     return;
