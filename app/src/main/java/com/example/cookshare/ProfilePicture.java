@@ -29,8 +29,12 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public class ProfilePicture extends CreateActivity {
@@ -97,6 +101,7 @@ public class ProfilePicture extends CreateActivity {
                     Toast.makeText(ProfilePicture.this, "There is no image!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 changePicture(mPhotoFile);
                 setResult(UserFragment.UPDATE_IMAGE_ACTIVITY_REQUEST_CODE);
                 finish();
@@ -111,7 +116,6 @@ public class ProfilePicture extends CreateActivity {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
 
-
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Bring up gallery to select a photo
             startActivityForResult(intent, PICK_PHOTO_CODE);
@@ -120,6 +124,10 @@ public class ProfilePicture extends CreateActivity {
 
     public Bitmap loadFromUri(Uri photoUri) {
         Bitmap image = null;
+
+        mPhotoFile = (new File(photoUri.getPath() + File.separator + mPhotoFileName));
+
+
         try {
             // check version of Android on device
             if (Build.VERSION.SDK_INT > 27) {
@@ -133,7 +141,7 @@ public class ProfilePicture extends CreateActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mPhotoFile = new File (photoUri.getPath());
+
         return image;
     }
 
@@ -148,6 +156,8 @@ public class ProfilePicture extends CreateActivity {
 
             // Load the selected image into  preview
             mIvPerson.setImageBitmap(selectedImage);
+
+
         }
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -166,7 +176,6 @@ public class ProfilePicture extends CreateActivity {
         Log.i(TAG, "trying to change picture");
         ParseUser myUser = ParseUser.getCurrentUser();
         myUser.put(User.KEY_PICTURE, new ParseFile(photoFile));
-
         myUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -180,4 +189,6 @@ public class ProfilePicture extends CreateActivity {
 
 
     }
+
+
 }
