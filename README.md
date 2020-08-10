@@ -92,8 +92,10 @@ Simple platform that allows people to connect through their interest in cooking 
     * Home Screen
 
 ## Wireframes
+## Video Walkthrough
 
-![](https://i.imgur.com/QJJAlt8.jpg)
+Here's a walkthrough of implemented user stories:
+![App Demo Link](https://github.com/maxinenzegwu/CookShare/raw/master/cooksharedemo.gif)
 
 ### Milestones
  *  MS0:
