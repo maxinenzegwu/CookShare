@@ -1,4 +1,4 @@
-Original App Design Project - README Template
+Original App Design Project - README 
 ===
 
 # Cook Share
@@ -14,7 +14,7 @@ Original App Design Project - README Template
 This is a mobile app that allows beginners to learn how to cook and experienced cooks to explore new recipes or share their own. Users can track their progress by sharing photos on what recipes they created or recreated on their own.
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
+
 - **Category:**
 Social / Food & Drink
 - **Mobile:**
@@ -35,17 +35,26 @@ Simple platform that allows people to connect through their interest in cooking 
 **Required Must-have Stories**
 
 * User can register a new account
-* User can log in and log out
-* User can share photos to feed
-* Users can like photos on their timeline
-* Users can search for recipes
-* User can have a feed of their liked photos
+* User can login and logout
+* User can share photos to timeline feed
+* Users can like photos on all feeds (including their timeline, profile page, or trending feed)
+* Users can see likes on all posts
+* User can navigate between which feed they want to view
+* User can create a new post and add a picture using the camera
+* User can pull to refresh to update whatever feed they are in
+* User can have a filter that only shows liked photos
+* User can tap a post to view the recipe to it
+* User can add a profile picture
+* Users can search for recipes from any feed
+* User can login through facebook
+* User can double tap to like a photo
+
 
 **Optional Nice-to-have Stories**
 
-* User can tap a photo to view the recipe to it
-* User can view another person's feed of photos
-* User can search for other users
+* User can login through facebook
+* Usable in landscape mode
+
 
 ### 2. Screen Archetypes
 
@@ -69,6 +78,7 @@ Simple platform that allows people to connect through their interest in cooking 
 * Home Feed
 * Liked Photos
 * User Photos
+* Most Popular
 
 **Flow Navigation** (Screen to Screen)
 
@@ -97,14 +107,11 @@ Simple platform that allows people to connect through their interest in cooking 
  [x] Add functionality for liking/saving posts
 
 *  MS2:
- [ ] Add searching algorithm
-    - allow users to search through recipe puppy api
-    - search by ingredients separated by a comma
+ [x] Add searching algorithm
     - sort through and find closest match
-[ ] Incorporate SDK
+ [x] Incorporate SDK
     - login through facebook or google
     - use either facebook or google SDK
- [ ] Create Logout Screen
  [x] Click a post to view the recipe for it
 
 * Nice to haves:
