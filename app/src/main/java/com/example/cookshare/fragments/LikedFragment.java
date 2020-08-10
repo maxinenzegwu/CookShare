@@ -39,9 +39,12 @@ public class LikedFragment extends HomeFragment {
     protected void queryPosts() {
 
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+
         query.whereContains(Post.KEY_FAVORITED, ParseUser.getCurrentUser().getObjectId());
         query.include(Post.KEY_USER);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.addDescendingOrder(KEY_FAVORITED);
+//        query.addDescendingOrder(Post.KEY_CREATED_AT);
+
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

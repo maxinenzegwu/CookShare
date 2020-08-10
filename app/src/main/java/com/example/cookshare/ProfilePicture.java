@@ -50,6 +50,7 @@ public class ProfilePicture extends CreateActivity {
     private Button mBtnChoosePicture;
     private ImageView mIvPerson;
     private File mPhotoFile;
+    private ParseFile pickedPhotoFile = null;
 
     public String mPhotoFileName = "photo.jpg";
 
@@ -102,11 +103,10 @@ public class ProfilePicture extends CreateActivity {
             public void onClick(View view) {
 
 
-                if (mPhotoFile == null || mIvPerson.getDrawable() == null) {
-                    if (pickedPhotoFile == null) {
-                        Toast.makeText(ProfilePicture.this, "There is no image!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                if ((mPhotoFile == null || mIvPerson.getDrawable() == null) && (pickedPhotoFile == null)) {
+                    Toast.makeText(ProfilePicture.this, "There is no image!", Toast.LENGTH_SHORT).show();
+                    return;
+
                 }
 
                 changePicture(mPhotoFile);
@@ -150,7 +150,7 @@ public class ProfilePicture extends CreateActivity {
         return image;
     }
 
-    private ParseFile pickedPhotoFile = null;
+
 
     public byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
@@ -211,6 +211,7 @@ public class ProfilePicture extends CreateActivity {
     protected void changePicture(final File photoFile) {
 
         Log.i(TAG, "trying to change picture");
+
         final ParseUser myUser = ParseUser.getCurrentUser();
         final ParseFile profilePhoto;
         if (pickedPhotoFile != null) {

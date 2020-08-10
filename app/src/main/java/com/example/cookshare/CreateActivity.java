@@ -25,8 +25,11 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class CreateActivity extends AppCompatActivity {
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
@@ -41,6 +44,7 @@ public class CreateActivity extends AppCompatActivity {
     protected ImageView mIvFood;
     private File mPhotoFile;
     public String mPhotoFileName = "photo.jpg";
+    private ParseFile pickedPhotoFile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +58,13 @@ public class CreateActivity extends AppCompatActivity {
         mIvFood = findViewById(R.id.ivPerson);
         mBtnCancel = findViewById(R.id.btnCancel);
 
-mBtnCancel.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        finish();
-    }
-});
+                finish();
+            }
+        });
         mBtnTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,11 +86,11 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
                 String recipeName = mEtRecipeName.getText().toString();
                 String recipe = mEtRecipe.getText().toString();
                 //check if recipe name or recipe is empty
-                if (recipeName.isEmpty() || recipe.isEmpty()){
+                if (recipeName.isEmpty() || recipe.isEmpty()) {
                     Toast.makeText(CreateActivity.this, "Must post a recipe and recipe name!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(mPhotoFile == null || mIvFood.getDrawable() == null){
+                if ((mPhotoFile == null || mIvFood.getDrawable() == null) && (pickedPhotoFile == null)) {
                     Toast.makeText(CreateActivity.this, "There is no image!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -96,8 +100,8 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         });
 
 
-
     }
+
     // Trigger gallery selection for a photo
     public void onPickPhoto(View view) {
         // Create intent for picking a photo from the gallery
@@ -117,7 +121,7 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         Bitmap image = null;
         try {
             // check version of Android on device
-            if(Build.VERSION.SDK_INT > 27){
+            if (Build.VERSION.SDK_INT > 27) {
                 // on newer versions of Android, use the new decodeBitmap method
                 ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), photoUri);
                 image = ImageDecoder.decodeBitmap(source);
@@ -130,6 +134,17 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         }
 
         return image;
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
     protected void launchCamera() {
@@ -164,6 +179,26 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
 
             // Load the selected image into a preview
             mIvFood.setImageBitmap(selectedImage);
+
+            InputStream input = null;
+
+            try {
+                input = getContentResolver().openInputStream(photoUri);
+                pickedPhotoFile = new ParseFile(getBytes(input));
+            } catch (FileNotFoundException e) {
+                Log.e(TAG, "file not found", e);
+            } catch (IOException e) {
+                Log.e(TAG, "I/O exception", e);
+            } finally {
+                if (input != null) {
+                    try {
+                        input.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, "I/O exception while trying to close input stream", e);
+                    }
+                }
+            }
+
         }
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -187,7 +222,7 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
         // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
             Log.d(TAG, "failed to create directory");
         }
 
@@ -201,15 +236,23 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
         Post post = new Post();
         post.setDescription(recipeName);
         post.setRecipe(recipe);
-        post.setImage(new ParseFile(photoFile));
+
         post.setUser(currentUser);
 
 
+        final ParseFile profilePhoto;
+        if (pickedPhotoFile != null) {
+            profilePhoto = pickedPhotoFile;
+        } else {
+            profilePhoto = new ParseFile(photoFile);
+        }
+
+        post.setImage(profilePhoto);
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 //check if there is an exception
-                if (e!=null){
+                if (e != null) {
                     Log.e(TAG, "error while saving", e);
                     Toast.makeText(CreateActivity.this, "error while saving", Toast.LENGTH_SHORT).show();
                 }
@@ -221,7 +264,6 @@ mBtnCancel.setOnClickListener(new View.OnClickListener() {
             }
         });
     }
-
 
 
 }
