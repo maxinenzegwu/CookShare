@@ -91,7 +91,6 @@ Simple platform that allows people to connect through their interest in cooking 
 * Create
     * Home Screen
 
-## Wireframes
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
