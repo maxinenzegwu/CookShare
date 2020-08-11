@@ -94,7 +94,7 @@ Simple platform that allows people to connect through their interest in cooking 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-![App Demo Link](https://github.com/maxinenzegwu/CookShare/raw/master/cooksharedemo.gif)
+![App Demo Link](https://github.com/maxinenzegwu/CookShare/blob/master/cooksharedemo.mp4)
 
 ### Milestones
  *  MS0:
